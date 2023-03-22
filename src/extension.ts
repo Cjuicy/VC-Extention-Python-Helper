@@ -4,6 +4,9 @@ import { appendFile } from 'fs';
 import { toNamespacedPath } from 'path';
 import * as vscode from 'vscode';
 
+
+import axios from 'axios';
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -31,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand(command, commandTimer));
 	context.subscriptions.push(disposable);
 
-	//get python file execution output content
+	//1. get python file execution output content
 	const commandGetTerminalInfo = 'python-helper.getTerminalInfo';
 	const commandGetTerminalInfoFunc = () => {
 		//get current active terminal
@@ -46,6 +49,18 @@ export function activate(context: vscode.ExtensionContext) {
 		}else{
 			console.log('terminal or editor is null');
 		}
+		//2.Calling the GPT interface to get the output content
+		//Execute jspath file
+		const chat = require('./chat.js');
+		chat.chat();
+	
+
+
+
+
+
+
+		//3. get the output content
 	};
 	context.subscriptions.push(vscode.commands.registerCommand(commandGetTerminalInfo, commandGetTerminalInfoFunc));
 
